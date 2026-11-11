@@ -1,7 +1,7 @@
 # UAE Trade Diversification: Machine Learning Framework & Dual-Tab Streamlit Web App
 
 ## 📺 Live Web App Walkthrough Video
-👉 **[Click Here to Watch the Demo Video]https://drive.google.com/file/d/1nzFeu8Wn08Gy2K4b-xrVBs-OawhKx8Qz/view?usp=sharing**
+👉 **[Click Here to Watch the Demo Video](https://drive.google.com/file/d/1nzFeu8Wn08Gy2K4b-xrVBs-OawhKx8Qz/view?usp=sharing)**
 
 *(Click the link above to view a screen recording of the live web interface, showing both the Export Growth Predictor tab and the HS Chapter Analysis dashboard running in real time).*
 
