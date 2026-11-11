@@ -1,65 +1,57 @@
-# UAE Trade Diversification: Machine Learning Framework & Streamlit Web App
+# UAE Trade Diversification: Machine Learning Framework & Dual-Tab Streamlit Web App
 
-## 📺 Live Dashboard Demo Video
-👉 **https://drive.google.com/file/d/1nzFeu8Wn08Gy2K4b-xrVBs-OawhKx8Qz/view?usp=sharing**
+## 📺 Live Web App Walkthrough Video
+👉 **(https://drive.google.com/file/d/1nzFeu8Wn08Gy2K4b-xrVBs-OawhKx8Qz/view?usp=sharing)**
 
-*(Click the link above to watch a quick video of the interface running live, showing how the sidebar filters, scenario sliders, and data tables respond in real time).*
+*(Click the link above to view a screen recording of the live web interface, showing both the Export Growth Predictor tab and the HS Chapter Analysis dashboard running in real time).*
 
 ---
 
 ## 📊 Project Overview
-I analyzed 12 years of public trade data from the World Bank (2012-2023) covering 97 different industrial product categories (HS-2 chapters). The goal of this project was to separate normal re-export shipping hub activity from true domestic import reliance, map out growth patterns using K-Means clustering, and use Gradient Boosting to find hidden export opportunities. I then built a clean Streamlit app to host the interactive dashboard online.
+I analyzed 12 years of public trade data from the World Bank (2012-2023) across 97 industrial categories (HS-2 chapters) to support UAE non-oil economic diversification. Using Python, I engineered a multi-stage data pipeline that identifies structural trade deficits, groups industries using K-Means clustering, and trains a Gradient Boosting Regressor to forecast future export growth. I then combined all these insights into a custom-styled, two-tab Streamlit web application.
 
 ---
 
 ## 🛠️ The Tech Stack
-- **Languages & Frameworks:** Python, Streamlit (for the web app dashboard page)
-- **Libraries:** Pandas, NumPy, Scikit-Learn, Statsmodels, Plotly
-- **Models Used:** K-Means Clustering, Gradient Boosting Regressor, Random Forest, XGBoost
+- **Web App & UI Styling:** Streamlit, Custom HTML/CSS, Base64 Background Rendering, Pyngrok
+- **Data Engineering & Models:** Python (Pandas, NumPy, Scikit-Learn, Joblib)
+- **Algorithms Used:** K-Means Clustering, Gradient Boosting Regressor, Random Forest, XGBoost
 
 ---
 
 ## 📁 Repository Structure
-- `/scripts/FPimbalance analysis.ipynb` -> SQL-style data pivoting, deficit tracking, and hub analysis
-- `/scripts/FPclustering.ipynb` -> K-Means model training, data scaling, and Silhouette optimization
-- `/scripts/FPpredictive.ipynb` -> Testing and evaluating time-series forecasting models
-- `/scripts/Hybrid_Model.ipynb` -> Fine-tuning model parameters and validating code scripts
-- `/scripts/app.py` -> The Python script that runs the interactive Streamlit dashboard web page
-- `/visuals/` -> Folder containing the master walkthrough video file
+- `/scripts/FPimbalance analysis.ipynb` -> Pivoting raw trade flows, computing deficit years, and classifying transit hubs.
+- `/scripts/FPclustering.ipynb` -> Calculating growth/volatility features, running K-Means ($k=3$), and exporting `clustering_results.csv`.
+- `/scripts/FPPredictive.ipynb` -> Time-series lag engineering, model comparisons, and exporting `uae_gb_non_oil_exports_model.joblib`.
+- `/scripts/Hybrid_Model.ipynb` -> Master deployment script assembling the dual-tab Streamlit interface (`app.py`).
+- `/visuals/` -> Folder containing the demo video recording of the live interface.
 
 ---
 
-## 🧼 Cleaning the Data & Engineering Features
-The dataset consists of 3,492 systematically structured panel records from the World Bank (WITS database). I used Python to process and transform the data:
-- **Pivoting & Aggregating:** Grouped over 100,000 raw bilateral lines to aggregate rows cleanly by year and product type, splitting records into unique columns for Imports, Exports, and Re-exports.
-- **New Calculations:** Created three core business metrics: *Total Exports* (Exports + Re-Exports), *Net Trade Balance*, and *Re-Export Intensity %*.
-- **Outlier Removal:** Filtered out Mineral Fuels (HS-27) during predictive modeling because its multi-billion dollar scale skewed the non-oil growth analysis.
+## 🧼 How the Data Was Processed
+- **Pivoting Trade Flows:** Aggregated raw World Bank records by year and product code, separating Imports, Exports, and Re-exports into distinct columns to calculate Total Exports, Net Trade Balance, and Re-export Intensity %.
+- **Outlier Filtering:** Excluded Mineral Fuels (HS-27) during predictive training because its massive multi-billion dollar scale distorted the non-oil growth patterns.
+- **Time-Series & Volatility Features:** Engineered 6 clustering indicators (including CAGR, Growth Consistency, and Trend Slope) alongside lagged variables and rolling averages for forecasting.
 
 ---
 
-## 💡 Key Business & Economic Insights
-
-### Deficit and Re-Export Analysis
-- **Embedded Deficits:** 84.4% of all product categories show long-term trade deficits, proving these imbalances are a permanent part of the trade landscape rather than temporary drops.
-- **Shipping Hub Hubs:** 48% of categories act as pass-through transit nodes. Large areas like Machinery (HS-84) and Electrical Equipment (HS-85) show multi-billion dollar deficits but have massive re-export ratios (>85%). This indicates high-velocity trading hub velocity, not domestic failure.
-- **Absolute Dependence:** Iron & Steel (HS-72) and processed food imports (HS-19/20) show heavy deficits with almost zero re-export activity (≤30%), flagging real areas of local domestic reliance.
-
-### Machine Learning Clustering Results
-Using K-Means clustering ($k=3$, optimized with a Silhouette Score of 0.497), the models cleanly separated the product space into three distinct sectors to help guide trade investments:
-- **Developing Sectors (28 Chapters):** High-velocity growth paths (Mean Growth = 33.74%) but high volatility (99.34). These are prime targets for export growth grants.
-- **Stable Sectors (61 Chapters):** The steady baseline of UAE trade. Shows low, predictable volatility (44.95%) and reliable performance—perfect for stable trade credit insurance.
-- **Declining Sectors (7 Chapters):** Downside trajectories with shrinking trend lines (Trend Slope = -13.43). High commercial risk zones.
-
-### Export Forecasting Predictions
-I tested multiple models on a chronological timeline split (Training on 2012-2017, Testing on 2020-2022). The **Gradient Boosting Regressor** yielded the best test accuracy ($R^2 = 0.678$), outperforming Random Forest and XGBoost. The model successfully isolated two major high-potential niche growth categories:
-- **HS-60 (Knitted Fabrics):** Projected Export Growth of +101.1%
-- **HS-41 (Raw Hides & Skins):** Projected Export Acceleration of +96.9%
+## 💡 Key Analytical Findings
+- **Embedded Deficits:** 84.4% of product chapters show persistent trade deficits over the 12-year timeline, proving these imbalances are structural rather than temporary dips.
+- **Shipping Hubs vs. Local Reliance:** 48% of chapters act as pass-through transit nodes. Machinery (HS-84, 91.1% re-export ratio) and Electrical Equipment (HS-85, 92.6% re-export ratio) show huge deficits alongside massive re-export activity. Conversely, Iron & Steel (HS-72, 20.2% re-export ratio) and processed foods (HS-19/20) represent true local import dependency.
+- **Sector Clusters:** K-Means clustering ($k=3$, Silhouette Score = 0.497) grouped the product landscape into **Stable Sectors (61 chapters)** with low volatility, **Developing Sectors (28 chapters)** with high growth momentum, and **Declining Sectors (7 chapters)** facing negative trend slopes.
+- **Export Forecasting:** Tested multiple models on a chronological split (2012–2017 train, 2020–2022 test). The **Gradient Boosting Regressor** yielded the strongest ML test performance ($R^2 = 0.678$), outperforming Random Forest ($0.566$) and XGBoost ($0.470$). It projected top 2023 growth opportunities in **Knitted Fabrics (HS-60, +101.1%)** and **Raw Hides & Skins (HS-41, +96.9%)**.
 
 ---
 
-## 🌐 How the Dashboard Works
-The Streamlit web application dashboard provides an intuitive, interactive interface:
-- **Control Sidebar:** Allows users to pick specific timelines and filter indicators instantly by individual HS-2 commodity codes.
-- **Real-Time KPI Cards:** Displays running totals for Imports, Exports, and Net Balances instantly based on user selections.
-- **Future Scenario Sliders:** Features an on-the-fly percentage slider so policy teams can change target parameters and simulate 2027 export projections on the fly.
-- **Integrated Data Grid:** Embeds a clean, scrollable data frame at the bottom so operators can drill into raw sorted data records without leaving the page.
+## 🌐 Inside the Dual-Tab Web Application (`Hybrid_Model.ipynb`)
+To make the analysis usable for policy teams, I deployed a unified, custom-styled web interface divided into two interactive tabs:
+
+### Tab 1: UAE Non-Oil Export Growth Predictor
+- **Dynamic History Inputs:** Users enter an HS-2 chapter code and input between 3 to 12 years of historical export values (in kUSD).
+- **Live Model Inference:** On click, the app dynamically computes lagged features, feeds them into the loaded Gradient Boosting model, and displays side-by-side KPI metrics for current vs. predicted exports.
+- **Automated Categorization & Export:** Classifies the prediction into visual growth tiers (e.g., *HIGH GROWTH 🚀*, *MODERATE GROWTH 📈*) and includes a one-click **Download Prediction as CSV** button.
+
+### Tab 2: UAE Trade Dynamics — HS Chapter Analysis
+- **Sidebar Search & Filtering:** Allows users to search by product description keywords or select any HS chapter code from a dropdown menu.
+- **Visual Status Badges:** Uses custom HTML/CSS cards to display color-coded status tags for **Deficit Severity**, **Dependency Type**, **Category**, and **Cluster Label**.
+- **KPIs & Re-Export Progress Bar:** Displays total deficit years, mean net trade in USD, average re-export ratio, and a visual intensity progress bar, paired with automated bulleted interpretations and a CSV download option.
